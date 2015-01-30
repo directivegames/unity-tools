@@ -38,7 +38,11 @@
         public UnityTask(IDispatcher dispatcher = null)
         {
             _waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
-            _dispatcher = dispatcher;
+            _dispatcher = dispatcher != null ? dispatcher : UnityDispatcher.Instance;
+            if (_dispatcher == null)
+            {
+                throw new InvalidOperationException("A UnityDispatcher object is required to create a UnityTask thread!");
+            }
         }
 
         /// <summary>
