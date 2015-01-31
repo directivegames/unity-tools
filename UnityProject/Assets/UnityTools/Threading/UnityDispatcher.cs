@@ -27,6 +27,8 @@
         private static UnityDispatcher _instance = null;
         private static int _unityThreadId;
 
+        private bool _awake;
+
         #endregion Fields
 
         #region Properties
@@ -133,13 +135,18 @@
             #pragma warning restore 618
         }
 
-        private void Awake()
+        public void Awake()
         {
-            _unityThreadId = GetCurrentThreadId();
+            if (!_awake)
+            {
+                _unityThreadId = GetCurrentThreadId();
 
-            if (_instance == null) {
-                _instance = this;
-                DontDestroyOnLoad(gameObject);
+                if (_instance == null)
+                {
+                    _instance = this;
+                    DontDestroyOnLoad(gameObject);
+                }
+                _awake = true;
             }
         }
 
